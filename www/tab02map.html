@@ -45,7 +45,7 @@
     </STYLE>
     <SCRIPT>
 
-        var lat, lon;
+        var lat, lon, geotime, alt;
 
         function pageLoader() {
             var h = window.innerHeight;
@@ -56,18 +56,28 @@
         function onSuccess(position) {
             lat = position.coords.latitude;
             lon = position.coords.longitude;
+            alt = position.coords.altitude;
+            geotime =  position.coords.timestamp;
+            
+            setPosition();
+            
+            console.log("lat: "+ lat + " lon: " + lon + " alt: " + alt + " time: " + geotime);
+
         }
 
         function onError(error) {
-            alert('code: ' + error.code + '\n' +
-            'message: ' + error.message + '\n');
+            console.log('error code: ' + error.code + '\n' +
+            'error message: ' + error.message + '\n');
         }
 
-        function getPosition() {
-            navigator.geolocation.getCurrentPosition(onSuccess, onError);
+        function setPosition() {
+            
             let map = document.getElementById("iframe-map");
             map.source = "https://www.openstreetmap.org/export/embed.html?bbox=-47.186279296875%2C-23.864489477406607%2C-46.08558654785157%2C-23.28171917560002&amp;layer=mapnik&amp;marker=" + lat + "%2C" + lon; // -23.567024632884326%2C-46.64939895272255"
+        
         }
+        //setInterval
+        setTimeout(function() { navigator.geolocation.getCurrentPosition(onSuccess, onError); }, 1000)
 
     </SCRIPT>
 </HEAD>
